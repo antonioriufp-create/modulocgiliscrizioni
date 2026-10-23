@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Delega FP CGIL Nord Sardegna</title>
+  <meta name="description" content="Iscriviti alla FP CGIL Nord Sardegna: compila e firma online la delega per la trattenuta in busta paga.">
+  <link rel="icon" href="logo-fp-cgil.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <img src="logo-fp-cgil.png" alt="FP CGIL" width="72" height="72">
+    <div>
+      <strong>FP CGIL NORD SARDEGNA</strong>
+      <span>Via Rockefeller 35 – 07100 Sassari · <a href="mailto:fpsassari@cgilsarda.it">fpsassari@cgilsarda.it</a></span>
+      <span>Via del Piave 44 – 07026 Olbia · <a href="mailto:fpgallura@cgilsarda.it">fpgallura@cgilsarda.it</a></span>
+    </div>
+  </header>
+
+  <main class="card">
+    <h1>Autorizzazione alla trattenuta in busta paga in favore di FP CGIL Nord Sardegna</h1>
+    <p class="lead">Compila la delega, poi firmala con il codice che ti invieremo via email. Riceverai una copia in PDF del modulo firmato.</p>
+
+    <form id="form" novalidate>
+      <fieldset>
+        <legend>1. Destinatario</legend>
+        <label>All'Amministrazione / Azienda *<input name="amministrazione" required maxlength="120" placeholder="es. ASL n. 1 di Sassari"></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. Dati personali</legend>
+        <div class="row">
+          <label>Cognome *<input name="cognome" required maxlength="60" autocomplete="family-name"></label>
+          <label>Nome *<input name="nome" required maxlength="60" autocomplete="given-name"></label>
+        </div>
+        <label>Codice fiscale *<input name="codiceFiscale" required maxlength="16" minlength="16" class="upper" autocomplete="off" spellcheck="false"></label>
+        <label>Abitante in (via e numero civico) *<input name="indirizzo" required maxlength="100" autocomplete="street-address"></label>
+        <div class="row row-3">
+          <label class="span-2">Città *<input name="citta" required maxlength="60" autocomplete="address-level2"></label>
+          <label>CAP *<input name="cap" required pattern="\d{5}" maxlength="5" inputmode="numeric" autocomplete="postal-code"></label>
+        </div>
+        <label>Cellulare *<input name="cellulare" type="tel" required maxlength="20" pattern="\+?[\d\s.\-/]{6,20}" autocomplete="tel"></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>3. Dati di lavoro</legend>
+        <div class="row">
+          <label>Datore di lavoro *<input name="datoreLavoro" required maxlength="120"></label>
+          <label>N. matricola stipendiale<input name="matricola" maxlength="30"></label>
+        </div>
+        <label>Posto di lavoro *<input name="postoLavoro" required maxlength="100" placeholder="es. reparto, servizio, ufficio"></label>
+        <label>Indirizzo sede di lavoro<input name="sedeLavoro" maxlength="120"></label>
+        <div class="row row-3">
+          <label class="span-2">Qualifica *<input name="qualifica" required maxlength="60"></label>
+          <label>Livello<input name="livello" maxlength="12"></label>
+        </div>
+        <div class="row">
+          <label>Tipo rapporto di lavoro *<input name="tipoRapporto" required maxlength="80" list="tipi"></label>
+          <label>Data assunzione<input name="dataAssunzione" type="date"></label>
+        </div>
+        <datalist id="tipi">
+          <option value="Tempo indeterminato"><option value="Tempo determinato">
+          <option value="Part-time tempo indeterminato"><option value="Part-time tempo determinato">
+          <option value="Somministrazione"><option value="Collaborazione">
+        </datalist>
+        <div class="row">
+          <label>Rapporto dal<input name="rapportoDal" type="date"></label>
+          <label>Rapporto al <small>(se a termine)</small><input name="rapportoAl" type="date"></label>
+        </div>
+        <label>CCNL applicato<input name="ccnl" maxlength="120" list="ccnl" placeholder="es. Comparto Sanità"></label>
+        <datalist id="ccnl">
+          <option value="CCNL Comparto Sanità"><option value="CCNL Funzioni Locali"><option value="CCNL Funzioni Centrali">
+          <option value="CCNL Area Sanità (dirigenza)"><option value="CCNL Sanità privata AIOP"><option value="CCNL Cooperative sociali">
+          <option value="CCNL Regione Sardegna - Comparto"><option value="CCNL Igiene ambientale">
+        </datalist>
+      </fieldset>
+
+      <fieldset>
+        <legend>4. Comunicazione</legend>
+        <div class="text">
+          <p><b>Autorizzo codesta amministrazione</b> ad effettuare la trattenuta mensile, incluse le mensilità aggiuntive, quale quota sociale da versare alla <b>Federazione Lavoratori Funzione Pubblica CGIL</b> nella misura dell'1% (uno) dello stipendio tabellare (paga base) previsto per il Comparto o Area Contrattuale di appartenenza. La trattenuta deve essere effettuata mese per mese e versata sul c/c intestato a:</p>
+          <p class="center"><b>C.G.I.L. FUNZIONE PUBBLICA SARDEGNA</b><br>COD. IBAN: IT30T0100517200000000016029</p>
+          <p>Dichiaro con la presente delega:<br>1) Che intendo l'iscrizione tacitamente rinnovata e che potrò revocare mediante comunicazione scritta all'Amministrazione e p.c. all'Organizzazione Sindacale la stessa con decorrenza dal primo giorno del mese successivo alla data di presentazione. La presente annulla qualsiasi altra delega / iscrizione precedentemente sottoscritta con altra Organizzazione Sindacale.</p>
+        </div>
+        <label class="check"><input type="checkbox" name="autorizzo" required>
+          <span>Autorizzo la trattenuta e confermo la dichiarazione sopra riportata *</span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>5. Informativa sul trattamento dei dati personali</legend>
+        <details>
+          <summary>Leggi l'informativa</summary>
+          <div class="text small">
+            <p>La Confederazione Generale Italiana del Lavoro (CGIL) fornisce di seguito all'iscritto o alla persona che avrà contatti regolari con il sindacato le informazioni fondamentali sulle caratteristiche del trattamento dei suoi dati che verranno svolti in esito all'iscrizione. <b>L'informativa completa e dettagliata è sempre scaricabile da <a href="https://www.cgil.it/privacy/" target="_blank" rel="noopener">www.cgil.it/privacy</a>.</b></p>
+            <p><b>Titolare, Contitolari, Responsabile della Protezione dei Dati.</b> La Confederazione Generale Italiana del Lavoro con sede a Roma in Corso Italia n. 25 (PEC: organizzazione@pec.cgil.it) è il Titolare. Le singole associazioni sindacali (CGIL regionali, Camere del lavoro, Federazioni o categorie nazionali, regionali e territoriali) sono contitolari del trattamento. L'estratto dell'accordo di contitolarità è reperibile nel sito www.cgil.it/contitolarita. Il Responsabile per la Protezione dei Dati potrà essere contattato all'indirizzo privacy@cgil.it.</p>
+            <p><b>Finalità e basi giuridiche.</b> I dati verranno acquisiti dall'interessato all'iscrizione e/o al primo contatto e potranno essere acquisiti anche successivamente, anche da soggetti terzi (familiari, datore di lavoro, ente previdenziale e/o assistenziale, Patronato, CAAF CGIL, altri enti costituiti e/o convenzionati). I dati verranno trattati: (a) per adempiere agli obblighi sindacali, sulla base della necessità di adempiere agli obblighi e alle prerogative statutarie. La comunicazione dei dati all'esterno del sindacato è sempre subordinata al consenso dell'iscritto; (b) per adempiere ad obblighi legali, sulla base della necessità di adempiere agli obblighi di legge o per motivi di interesse pubblico rilevante; (c) sulla base del consenso dell'interessato, per comunicare i dati a terze parti quali il Patronato e/o i CAAF costituiti dalla CGIL, gli enti costituiti, promossi e/o convenzionati con la CGIL che svolgano servizi connessi alla tutela della persona, solo sulla base del consenso dell'interessato e per consentire alle predette terze parti l'erogazione dei servizi connessi alla tutela della persona in ambito lavorativo, fiscale, contabile, previdenziale, assistenziale e consumeristico; (e) per svolgere ricerche di natura statistica, sulla base della necessità e volontà di procedere all'indagine statistica, rigorosamente su dati trasformati in forma anonima e pubblicati solo in forma aggregata; (f) solo su consenso dell'iscritto, per profilare l'interessato, anche avvalendosi dei dati ricevuti da terze parti, al fine di elaborare, sulla base delle sue caratteristiche personali e reddituali, quali sono i benefici lavorativi, fiscali, contabili, previdenziali, assistenziali, consumeristici, familiari e/o in qualsiasi settore nel quale la CGIL presti attività di tutela dell'iscritto e, quindi, per aiutarlo a perseguire tali benefici.</p>
+            <p><b>Natura del conferimento e conseguenze in caso di rifiuto.</b> Il conferimento dei dati richiesti è facoltativo. Qualora l'interessato rifiuti di conferire i dati anagrafici sarebbe impossibile perfezionare l'iscrizione al sindacato e/o svolgere l'attività sindacale a suo favore. Laddove rifiuti di fornire altri dati non essenziali per l'iscrizione o per l'attività, potrebbe essere impossibile o particolarmente difficoltoso garantire il corretto perseguimento delle finalità sindacali o istituzionali.</p>
+            <p><b>Comunicazione, diffusione e trasferimento all'estero dei dati.</b> Al fine di adempiere agli obblighi statutari, i dati potrebbero essere trasmessi e comunicati, esclusivamente previo consenso, ad altri soggetti quali il datore di lavoro o ente pensionistico, ente bilaterale o enti paritetici contrattuali e/o enti pubblici verso i quali la comunicazione è prevista dalla normativa. I dati stessi potrebbero inoltre essere comunicati, sempre previo consenso, e per consentire di usufruire dei servizi offerti, o comunque per informare sui medesimi servizi, al Patronato Inca e ai CAAF CGIL, all'AUSER, al SUNIA o alla Federconsumatori, ad associazioni costituite o promosse dalla CGIL o, comunque, a enti o persone giuridiche con o senza scopo di lucro, costituiti o promossi dalla CGIL dei quali il sindacato si avvale per il perseguimento dei propri scopi. I suoi dati personali potranno essere diffusi solo laddove siano stati resi pubblici dall'interessato e, comunque, esclusivamente nel caso in cui l'interessato abbia assunto cariche dirigenziali sindacali. I dati non saranno trasferiti in Paesi extra UE o verso organizzazioni internazionali, salvo che non vi sia una decisione di adeguatezza. In altri casi, e solo laddove consentito dalla normativa vigente, i dati potrebbero essere trasferiti all'estero solo laddove previamente pseudoanonimizzati o criptati.</p>
+            <p><b>Conservazione dei dati.</b> I dati saranno trattati per il tempo strettamente necessario all'adempimento delle predette finalità sindacali (normalmente coincidente con il periodo di iscrizione al sindacato e, successivamente, per la durata massima di dieci anni). Per i trattamenti subordinati al consenso i dati saranno trattati sino a quando l'interessato non lo revocherà.</p>
+            <p><b>Diritti dell'interessato e Reclamo.</b> La legge riconosce all'interessato il diritto di chiedere l'accesso ai dati e al trattamento e, nei casi previsti, la rettifica, la cancellazione e la portabilità dei dati. L'interessato gode altresì del diritto di chiedere la limitazione del trattamento, opporsi allo stesso e/o revocare il consenso sul quale il trattamento si fondi. L'interessato gode altresì del diritto di proporre reclamo o segnalazione all'autorità di controllo dello Stato UE in cui risiede, in cui lavora o in cui è avvenuta la violazione. I predetti diritti possono essere esercitati direttamente presso le strutture territoriali della CGIL (www.cgil.it/sedi), oppure scrivendo al Responsabile per la Protezione dei Dati (privacy@cgil.it).</p>
+          </div>
+        </details>
+        <label class="check"><input type="checkbox" name="informativa" required>
+          <span>Ho letto l'informativa che precede e sono stato informato del luogo in cui reperire l'informativa completa e dettagliata *</span></label>
+
+        <p class="hint">Dichiaro di seguito la mia volontà in ordine al trattamento dei dati subordinato al mio consenso:</p>
+        <div class="consent">
+          <p>1. Alla comunicazione dei miei dati comuni e relativi all'iscrizione al sindacato ai soggetti indicati nell'informativa (datore di lavoro, enti previdenziali ed assistenziali, enti bilaterali, enti paritetici contrattuali, enti pubblici) nei limiti in cui la comunicazione sia essenziale per l'adempimento degli scopi statutari o degli obblighi legali.</p>
+          <div class="choice"><label><input type="radio" name="c0" value="si" required> presto il consenso</label><label><input type="radio" name="c0" value="no"> nego il consenso</label></div>
+        </div>
+        <div class="consent">
+          <p>2. Alla comunicazione e al trattamento dei miei dati comuni e particolari, questi ultimi limitatamente all'iscrizione o ai contatti regolari con il sindacato, al Patronato Inca, ai CAAF CGIL SRL costituiti dalla CGIL, al Sunia, all'Auser, alla Federconsumatori e, comunque, agli enti e alle persone giuridiche, con o senza scopo di lucro, delle quali si avvale il sindacato per il perseguimento degli scopi statutari o, comunque, con essa convenzionate o affiliate, o da essa costituiti e/o promossi, affinché tali soggetti svolgano attività promozionale, a mezzo posta cartacea e di strumenti tecnologici avanzati quali fax, SMS, MMS e Email, relativamente ai servizi offerti in ambito lavorativo, fiscale, contabile, previdenziale, assistenziale e consumeristico.</p>
+          <div class="choice"><label><input type="radio" name="c1" value="si" required> presto il consenso</label><label><input type="radio" name="c1" value="no"> nego il consenso</label></div>
+        </div>
+        <div class="consent">
+          <p>3. Alla comunicazione e al successivo trattamento dei miei dati comuni e particolari dei quali sia in possesso la CGIL, al Patronato Inca, ai CAAF CGIL SRL costituiti dalla CGIL, al Sunia, all'Auser, alla Federconsumatori e, comunque, agli enti e alle persone giuridiche, con o senza scopo di lucro, delle quali si avvale il sindacato per il perseguimento degli scopi statutari o, comunque, con essa convenzionate o affiliate, o da essa costituiti e/o promossi, affinché tali soggetti procedano al trattamento di tali dati al fine di adempiere a specifico mandato o incarico da me conferito a tali soggetti in ambito lavorativo, fiscale, contabile, previdenziale, assistenziale e consumeristico.</p>
+          <div class="choice"><label><input type="radio" name="c2" value="si" required> presto il consenso</label><label><input type="radio" name="c2" value="no"> nego il consenso</label></div>
+        </div>
+        <div class="consent">
+          <p>4. Alla profilazione dei miei dati personali, ivi compresi quelli acquisiti da terze parti ai quali l'iscritto ha prestato il consenso per la trasmissione alla CGIL, finalizzata all'individuazione di benefici dei quali potrei godere in ambito sindacale, lavorativo, fiscale, contabile, previdenziale, assistenziale, consumeristico e/o, comunque, nei contesti per i quali la CGIL persegue finalità di tutela degli iscritti o dei soggetti che hanno contatti regolari, alla luce delle mie condizioni personali e/o reddituali e al successivo loro trattamento necessario per informarmi dei benefici stessi e delle modalità per poterli ottenere.</p>
+          <div class="choice"><label><input type="radio" name="c3" value="si" required> presto il consenso</label><label><input type="radio" name="c3" value="no"> nego il consenso</label></div>
+        </div>
+      </fieldset>
+
+      <fieldset class="sign">
+        <legend>6. Firma con codice via email</legend>
+        <label>Luogo di sottoscrizione *<input name="luogo" required maxlength="60" placeholder="es. Sassari"></label>
+        <label>La tua email *
+          <span class="inline">
+            <input id="email" name="email" type="email" required maxlength="254" autocomplete="email">
+            <button type="button" id="sendBtn" class="secondary">Invia codice</button>
+          </span>
+        </label>
+        <div id="otpBox" hidden>
+          <label>Codice di 6 cifre ricevuto via email *
+            <input id="code" inputmode="numeric" pattern="\d{6}" maxlength="6" autocomplete="one-time-code" placeholder="123456" class="otp">
+          </label>
+          <p class="hint">Inserendo il codice e premendo "Firma e invia" sottoscrivi la delega con firma elettronica.</p>
+          <button type="submit" id="submitBtn">Firma e invia la delega</button>
+        </div>
+        <p id="msg" class="msg" role="status" aria-live="polite"></p>
+      </fieldset>
+    </form>
+
+    <div id="done" hidden class="done">
+      <h2>Delega firmata e inviata ✔</h2>
+      <p>Grazie per esserti iscritto alla FP CGIL! Ti abbiamo inviato via email una copia in PDF del modulo firmato.</p>
+      <p>Numero di riferimento: <b id="refId"></b></p>
+    </div>
+  </main>
+  <footer class="foot">FP CGIL Nord Sardegna · I dati sono trattati secondo l'informativa CGIL (<a href="https://www.cgil.it/privacy/" target="_blank" rel="noopener">www.cgil.it/privacy</a>)</footer>
+  <script src="app.js"></script>
+</body>
+</html>

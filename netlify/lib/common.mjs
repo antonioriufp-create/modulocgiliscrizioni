@@ -13,6 +13,23 @@ export const json = (status, body) =>
     headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" },
   });
 
+// Avvolge una funzione: qualsiasi errore imprevisto diventa una risposta JSON leggibile
+export const withErrors = (fn) => async (req, context) => {
+  try {
+    return await fn(req, context);
+  } catch (err) {
+    console.error(err);
+    const m = String(err?.message || "");
+    if (m.includes("OTP_SECRET")) {
+      return json(500, { error: "Configurazione del server incompleta: manca OTP_SECRET (o è più corta di 32 caratteri). Aggiungila nelle Environment variables e ripubblica il sito." });
+    }
+    if (/blob/i.test(err?.name || "") || /blob/i.test(m)) {
+      return json(500, { error: "Errore dell'archivio Netlify Blobs. Riprova tra poco; se persiste, controlla i log della funzione." });
+    }
+    return json(500, { error: `Errore del server (${err?.name || "Error"}: ${m.slice(0, 120)}). Riprova o controlla i log della funzione.` });
+  }
+};
+
 export const readJson = async (req) => {
   try {
     return await req.json();
@@ -69,6 +86,10 @@ export function mailer() {
       port,
       secure: port === 465,
       auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      // Netlify interrompe le funzioni dopo ~10 secondi: meglio un errore chiaro prima
+      connectionTimeout: 7000,
+      greetingTimeout: 7000,
+      socketTimeout: 8000,
     });
   }
   return transporter;

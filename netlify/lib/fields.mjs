@@ -1,3 +1,21 @@
+// Aree territoriali: cambia il conto su cui versare la quota e chi riceve le deleghe
+export const AREE = {
+  sassari: {
+    nome: "Area di Sassari",
+    sigla: "SS",
+    intestatario: "C.G.I.L. FUNZIONE PUBBLICA SARDEGNA",
+    iban: "IT30T0100517200000000016029",
+    notifyEnv: "NOTIFY_TO_SASSARI",
+  },
+  gallura: {
+    nome: "Area della Gallura",
+    sigla: "GA",
+    intestatario: "C.G.I.L. FUNZIONE PUBBLICA SARDEGNA",
+    iban: "IT17F0101584980000000017383",
+    notifyEnv: "NOTIFY_TO_GALLURA",
+  },
+};
+
 // Campi della delega. Se li modifichi, aggiorna anche public/index.html e netlify/lib/pdf.mjs
 export const FIELDS = [
   { name: "amministrazione", label: "All'Amministrazione / Azienda", required: true, max: 120 },
@@ -47,6 +65,8 @@ const isDate = (v) => /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(
 // Restituisce { data } oppure { error }
 export function validate(input) {
   const data = {};
+  if (!Object.hasOwn(AREE, input?.area)) return { error: "Seleziona l'area (Sassari o Gallura)." };
+  data.area = input.area;
   for (const f of FIELDS) {
     let v = String(input?.[f.name] ?? "").trim().replace(/\s+/g, " ");
     if (f.required && !v) return { error: `Il campo "${f.label}" è obbligatorio.` };

@@ -1,10 +1,10 @@
 import crypto from "node:crypto";
 import { getStore } from "@netlify/blobs";
-import { json, readJson, readToken, hmac, mailer, mailFrom, esc } from "../lib/common.mjs";
-import { FIELDS, CONSENSI, validate, fmtDate } from "../lib/fields.mjs";
+import { json, readJson, readToken, hmac, mailer, mailFrom, esc, withErrors } from "../lib/common.mjs";
+import { FIELDS, CONSENSI, AREE, validate, fmtDate } from "../lib/fields.mjs";
 import { buildPdf } from "../lib/pdf.mjs";
 
-export default async (req, context) => {
+export default withErrors(async (req, context) => {
   if (req.method !== "POST") return json(405, { error: "Metodo non consentito." });
   const body = await readJson(req);
   const tok = readToken(body?.token);
@@ -20,7 +20,8 @@ export default async (req, context) => {
   await used.set(tokKey, "1");
 
   const submittedAt = Date.now();
-  const id = `DEL-${new Date(submittedAt).toISOString().slice(0, 10).replace(/-/g, "")}-${crypto.randomBytes(3).toString("hex").toUpperCase()}`;
+  const area = AREE[data.area];
+  const id = `DEL-${area.sigla}-${new Date(submittedAt).toISOString().slice(0, 10).replace(/-/g, "")}-${crypto.randomBytes(3).toString("hex").toUpperCase()}`;
   const record = {
     id, email: tok.e, ...data,
     verifiedAt: new Date(tok.v).toISOString(),
@@ -48,6 +49,7 @@ export default async (req, context) => {
   const attachment = { filename, content: Buffer.from(pdfBytes), contentType: "application/pdf" };
   const rows = [
     ["Riferimento", id],
+    ["Area", `${area.nome} (IBAN ${area.iban})`],
     ["Email (verificata con OTP)", tok.e],
     ...FIELDS.map((f) => [f.label, (f.date ? fmtDate(data[f.name]) : data[f.name]) || "—"]),
     ...CONSENSI.map((c, i) => [`Consenso ${i + 1}`, data.consensi[i] === "si" ? "Prestato" : "Negato"]),
@@ -58,12 +60,13 @@ export default async (req, context) => {
     .join("")}</table>`;
 
   try {
-    if (process.env.NOTIFY_TO) {
+    const notifyTo = process.env[area.notifyEnv] || process.env.NOTIFY_TO;
+    if (notifyTo) {
       await mailer().sendMail({
         from: mailFrom(),
-        to: process.env.NOTIFY_TO,
+        to: notifyTo,
         replyTo: tok.e,
-        subject: `Nuova delega: ${data.cognome} ${data.nome} — ${data.amministrazione} [${id}]`,
+        subject: `Nuova delega ${area.nome}: ${data.cognome} ${data.nome} — ${data.amministrazione} [${id}]`,
         text: rows.map(([k, v]) => `${k}: ${v}`).join("\n"),
         html: `<h2>Nuova delega sindacale online</h2>${table}<p>In allegato il modulo compilato con l'attestazione di verifica.</p>`,
         attachments: [attachment],
@@ -83,6 +86,6 @@ export default async (req, context) => {
   }
 
   return json(200, { ok: true, id });
-};
+});
 
 export const config = { path: "/api/submit" };

@@ -4,7 +4,33 @@ const sendBtn = $("sendBtn"), submitBtn = $("submitBtn"), msgEl = $("msg");
 const TEXT_FIELDS = ["amministrazione", "cognome", "nome", "indirizzo", "citta", "cap", "cellulare", "codiceFiscale",
   "matricola", "postoLavoro", "sedeLavoro", "datoreLavoro", "qualifica", "livello", "dataAssunzione", "tipoRapporto",
   "rapportoDal", "rapportoAl", "ccnl", "luogo"];
-let token = null, verifiedEmail = null, timer = null;
+let token = null, verifiedEmail = null, timer = null, area = null;
+
+// Aree: devono coincidere con netlify/lib/fields.mjs
+const AREE = {
+  sassari: { nome: "Area di Sassari", intestatario: "C.G.I.L. FUNZIONE PUBBLICA SARDEGNA", iban: "IT30T0100517200000000016029" },
+  gallura: { nome: "Area della Gallura", intestatario: "C.G.I.L. FUNZIONE PUBBLICA SARDEGNA", iban: "IT17F0101584980000000017383" },
+};
+
+function showArea(key) {
+  area = key;
+  $("areaName").textContent = AREE[key].nome;
+  $("intestatario").textContent = AREE[key].intestatario;
+  $("iban").textContent = AREE[key].iban;
+  $("areaStep").hidden = true;
+  $("formStep").hidden = false;
+  try { history.replaceState(null, "", `?area=${key}`); } catch {}
+  window.scrollTo({ top: 0 });
+}
+document.querySelectorAll("button.area").forEach((b) => b.addEventListener("click", () => showArea(b.dataset.area)));
+$("changeArea").addEventListener("click", () => {
+  $("formStep").hidden = true;
+  $("areaStep").hidden = false;
+  try { history.replaceState(null, "", location.pathname); } catch {}
+});
+// Link diretto a un'area: ?area=sassari oppure ?area=gallura
+const fromUrl = new URLSearchParams(location.search).get("area");
+if (Object.hasOwn(AREE, fromUrl)) showArea(fromUrl);
 
 function msg(text, type = "") { msgEl.textContent = text; msgEl.className = `msg ${type}`; }
 
@@ -13,7 +39,12 @@ async function api(path, payload) {
     method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload),
   });
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw Object.assign(new Error(data.error || "Errore imprevisto, riprova."), data);
+  if (!res.ok) {
+    const fallback = res.status === 404
+      ? "Servizio non trovato (404): le funzioni Netlify non risultano pubblicate."
+      : `Errore imprevisto (HTTP ${res.status}), riprova tra poco.`;
+    throw Object.assign(new Error(data.error || fallback), data);
+  }
   return data;
 }
 
@@ -56,7 +87,7 @@ function checkForm() {
 }
 
 function collect() {
-  const fields = {};
+  const fields = { area };
   for (const k of TEXT_FIELDS) fields[k] = form.elements[k].value;
   fields.consensi = [0, 1, 2, 3].map((i) => form.elements[`c${i}`].value);
   fields.autorizzo = form.elements.autorizzo.checked;
@@ -106,7 +137,7 @@ form.addEventListener("submit", async (e) => {
     }
     msg("Firma e invio della delega in corso…");
     const r = await api("submit", { token, fields: collect() });
-    form.hidden = true;
+    $("formStep").hidden = true;
     $("refId").textContent = r.id;
     $("done").hidden = false;
     window.scrollTo({ top: 0, behavior: "smooth" });

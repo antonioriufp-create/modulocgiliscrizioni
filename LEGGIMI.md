@@ -1,6 +1,9 @@
 # Delega FP CGIL Nord Sardegna — modulo online con firma OTP via email (Netlify)
 
 ## Come funziona
+0. All'apertura il lavoratore sceglie l'**area**: **Sassari** o **Gallura**. L'area decide l'IBAN
+   su cui versare la quota (mostrato nella pagina e stampato nel PDF) e chi riceve la delega.
+   Link diretti: `https://SITO.netlify.app/?area=sassari` e `https://SITO.netlify.app/?area=gallura`.
 1. Il lavoratore compila online la delega (stessi campi del modulo cartaceo MOD.SS),
    legge l'informativa e sceglie i 4 consensi (presto / nego).
 2. Nella sezione **Firma** inserisce la sua email → **Invia codice**.
@@ -52,7 +55,11 @@ Netlify: **Site configuration → Environment variables → Add a variable**
 | `SMTP_USER`  | `indirizzo@gmail.com`                            |
 | `SMTP_PASS`  | password per le app                              |
 | `MAIL_FROM`  | `FP CGIL Nord Sardegna <indirizzo@gmail.com>`    |
-| `NOTIFY_TO`  | chi riceve le deleghe, es. `fpsassari@cgilsarda.it` (più indirizzi separati da virgola) |
+| `NOTIFY_TO_SASSARI` | chi riceve le deleghe dell'area di Sassari, es. `fpsassari@cgilsarda.it` |
+| `NOTIFY_TO_GALLURA` | chi riceve le deleghe dell'area della Gallura, es. `fpgallura@cgilsarda.it` |
+| `NOTIFY_TO`  | (facoltativa) indirizzo di riserva se manca quello dell'area |
+
+Per più destinatari separa gli indirizzi con una virgola.
 
 Per generare `OTP_SECRET`: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
 (oppure un generatore di password lunghe). **Non cambiarla** dopo la pubblicazione senza motivo.
@@ -61,14 +68,17 @@ Dopo aver aggiunto le variabili: **Deploys → Trigger deploy → Deploy site**.
 
 ## 4. Dove trovo le deleghe
 - Via email a `NOTIFY_TO`, con PDF allegato ("Rispondi" scrive direttamente all'iscritto).
-- Archivio: pannello del sito su Netlify → **Blobs** → store `deleghe` (`DEL-....pdf` e `DEL-....json`).
+- Archivio: pannello del sito su Netlify → **Blobs** → store `deleghe`. I file si chiamano
+  `DEL-SS-....` (Sassari) e `DEL-GA-....` (Gallura), in formato `.pdf` e `.json`.
 
 ## Modificare il modulo
 - Pagina web: `public/index.html` (testi, campi, elenchi suggeriti di CCNL e tipi di rapporto).
 - Regole dei campi: `netlify/lib/fields.mjs`.
 - Posizione dei dati sul PDF: `netlify/lib/pdf.mjs`.
-- Se cambi il PDF del modulo: sostituisci `assets/modulo-delega.pdf` ed esegui `npm run template`
-  (poi verifica le coordinate in `pdf.mjs`).
+- IBAN e intestatario delle aree: `AREE` in `netlify/lib/fields.mjs` **e** in `public/app.js`.
+- Modelli PDF: `assets/modulo-delega.pdf` (Sassari) e `assets/modulo-delega-gallura.pdf`
+  (lo stesso modulo senza IBAN: quello della Gallura viene scritto dal programma).
+  Se sostituisci un PDF esegui `npm run template` e verifica le coordinate in `pdf.mjs`.
 
 ## Nota sul valore della firma
 La firma con OTP via email è una **firma elettronica semplice** (Reg. UE 910/2014 – eIDAS, art. 20 CAD):

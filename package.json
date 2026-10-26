@@ -9,6 +9,6 @@
     "pdf-lib": "^1.17.1"
   },
   "scripts": {
-    "template": "node -e \"const f=require('fs');f.writeFileSync('netlify/lib/template.mjs','export default \\\"'+f.readFileSync('assets/modulo-delega.pdf').toString('base64')+'\\\";\\n')\""
+    "template": "node scripts/build-templates.mjs"
   }
 }

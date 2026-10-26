@@ -50,8 +50,17 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .msg.ok { color: var(--ok); } .msg.err { color: var(--err); }
 .done { text-align: center; padding: 24px 0; }
 .done h2 { color: var(--ok); }
+.areas { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 8px 0 6px; }
+button.area { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; text-align: left; white-space: normal;
+  background: #fff; color: var(--text); border: 2px solid var(--border); border-radius: 12px; padding: 20px 18px; font-weight: 400; }
+button.area strong { font-size: 1.15rem; color: var(--accent-dark); }
+button.area span { font-size: .88rem; color: var(--muted); }
+button.area:hover:not(:disabled), button.area:focus-visible { background: #fff6f7; border-color: var(--accent); outline: none; }
+.area-badge { display: inline-block; margin: 0 0 12px; padding: 4px 12px; border-radius: 999px; background: #fdecee; color: var(--accent-dark); font-size: .88rem; font-weight: 600; }
+button.link { background: none; border: 0; padding: 0; color: var(--accent-dark); text-decoration: underline; font-weight: 500; font-size: inherit; }
+button.link:hover:not(:disabled) { background: none; color: var(--accent); }
 .foot { max-width: 760px; margin: 18px auto 0; font-size: .8rem; color: var(--muted); text-align: center; }
 @media (max-width: 560px) {
-  .row, .row-3 { grid-template-columns: 1fr; } .span-2 { grid-column: auto; }
+  .row, .row-3, .areas { grid-template-columns: 1fr; } .span-2 { grid-column: auto; }
   .card { padding: 20px 16px; } .inline { flex-direction: column; } .top img { width: 56px; height: 56px; }
 }

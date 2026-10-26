@@ -19,6 +19,23 @@
   </header>
 
   <main class="card">
+    <section id="areaStep">
+      <h1>Iscriviti alla FP CGIL Nord Sardegna</h1>
+      <p class="lead">Per iniziare, scegli l'area territoriale in cui lavori.</p>
+      <div class="areas">
+        <button type="button" class="area" data-area="sassari">
+          <strong>Area di Sassari</strong>
+          <span>Sede: Via Rockefeller 35 – 07100 Sassari</span>
+        </button>
+        <button type="button" class="area" data-area="gallura">
+          <strong>Area della Gallura</strong>
+          <span>Sede: Via del Piave 44 – 07026 Olbia</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="formStep" hidden>
+    <p class="area-badge"><span id="areaName"></span> · <button type="button" id="changeArea" class="link">cambia area</button></p>
     <h1>Autorizzazione alla trattenuta in busta paga in favore di FP CGIL Nord Sardegna</h1>
     <p class="lead">Compila la delega, poi firmala con il codice che ti invieremo via email. Riceverai una copia in PDF del modulo firmato.</p>
 
@@ -80,7 +97,7 @@
         <legend>4. Comunicazione</legend>
         <div class="text">
           <p><b>Autorizzo codesta amministrazione</b> ad effettuare la trattenuta mensile, incluse le mensilità aggiuntive, quale quota sociale da versare alla <b>Federazione Lavoratori Funzione Pubblica CGIL</b> nella misura dell'1% (uno) dello stipendio tabellare (paga base) previsto per il Comparto o Area Contrattuale di appartenenza. La trattenuta deve essere effettuata mese per mese e versata sul c/c intestato a:</p>
-          <p class="center"><b>C.G.I.L. FUNZIONE PUBBLICA SARDEGNA</b><br>COD. IBAN: IT30T0100517200000000016029</p>
+          <p class="center"><b id="intestatario">C.G.I.L. FUNZIONE PUBBLICA SARDEGNA</b><br>COD. IBAN: <b id="iban"></b></p>
           <p>Dichiaro con la presente delega:<br>1) Che intendo l'iscrizione tacitamente rinnovata e che potrò revocare mediante comunicazione scritta all'Amministrazione e p.c. all'Organizzazione Sindacale la stessa con decorrenza dal primo giorno del mese successivo alla data di presentazione. La presente annulla qualsiasi altra delega / iscrizione precedentemente sottoscritta con altra Organizzazione Sindacale.</p>
         </div>
         <label class="check"><input type="checkbox" name="autorizzo" required>
@@ -142,6 +159,7 @@
         <p id="msg" class="msg" role="status" aria-live="polite"></p>
       </fieldset>
     </form>
+    </section>
 
     <div id="done" hidden class="done">
       <h2>Delega firmata e inviata ✔</h2>

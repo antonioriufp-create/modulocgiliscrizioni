@@ -1,7 +1,7 @@
 import { getStore } from "@netlify/blobs";
-import { json, readJson, normEmail, isEmail, hmac, keyFor, safeEqual, signToken, MAX_ATTEMPTS } from "../lib/common.mjs";
+import { json, readJson, normEmail, isEmail, hmac, keyFor, safeEqual, signToken, MAX_ATTEMPTS, withErrors } from "../lib/common.mjs";
 
-export default async (req) => {
+export default withErrors(async (req) => {
   if (req.method !== "POST") return json(405, { error: "Metodo non consentito." });
   const body = await readJson(req);
   const email = normEmail(body?.email);
@@ -30,6 +30,6 @@ export default async (req) => {
   // Codice corretto: lo invalido (resta solo l'informazione per il limite di invii)
   await store.setJSON(key, { ...rec, hash: null });
   return json(200, { ok: true, token: signToken(email) });
-};
+});
 
 export const config = { path: "/api/verify-otp" };

@@ -1,6 +1,10 @@
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
-import template from "./template.mjs";
-import { FIELDS, CONSENSI, fmtDate } from "./fields.mjs";
+import templateSassari from "./template.mjs";
+import templateGallura from "./template-gallura.mjs";
+import { FIELDS, CONSENSI, AREE, fmtDate } from "./fields.mjs";
+
+// Modello per area. Quello della Gallura è il modulo di Sassari senza l'IBAN, che viene scritto qui sotto.
+const TEMPLATES = { sassari: templateSassari, gallura: templateGallura };
 
 const INK = rgb(0.05, 0.15, 0.45);
 
@@ -37,12 +41,19 @@ const romeDateParts = (ms) => {
  * d = dati validati; meta = { id, email, verifiedAt, submittedAt, ip, userAgent, dataHash }
  */
 export async function buildPdf(d, meta) {
-  const pdf = await PDFDocument.load(Buffer.from(template, "base64"));
+  const pdf = await PDFDocument.load(Buffer.from(TEMPLATES[d.area], "base64"));
   const font = await pdf.embedFont(StandardFonts.Helvetica);
   const bold = await pdf.embedFont(StandardFonts.HelveticaBold);
   const [p1, p2] = pdf.getPages();
   const H1 = p1.getHeight();
   const y1 = (yMax) => H1 - yMax + 2.5; // da coordinate "dall'alto" a baseline PDF
+  const area = AREE[d.area];
+
+  if (d.area === "gallura") {
+    let size = 11;
+    while (bold.widthOfTextAtSize(area.iban, size) > 161) size -= 0.25;
+    p1.drawText(area.iban, { x: 245, y: H1 - 656, size, font: bold, color: rgb(0, 0, 0) });
+  }
 
   put(p1, font, d.amministrazione, 205, y1(218), 330);
   put(p1, font, d.cognome, 108, y1(240), 195);
@@ -106,6 +117,7 @@ export async function buildPdf(d, meta) {
   y -= 12;
 
   line("Riferimento pratica", meta.id);
+  line("Area", `${area.nome} - versamento su IBAN ${area.iban}`);
   line("Firmatario", `${d.nome} ${d.cognome}`);
   line("Codice fiscale", d.codiceFiscale);
   line("Email verificata (OTP)", meta.email);

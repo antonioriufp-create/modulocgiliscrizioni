@@ -2,10 +2,10 @@ import crypto from "node:crypto";
 import { getStore } from "@netlify/blobs";
 import {
   json, readJson, normEmail, isEmail, hmac, keyFor, mailer, mailFrom,
-  OTP_TTL_MS, RESEND_COOLDOWN_MS, MAX_SENDS_PER_HOUR,
+  OTP_TTL_MS, RESEND_COOLDOWN_MS, MAX_SENDS_PER_HOUR, withErrors,
 } from "../lib/common.mjs";
 
-export default async (req) => {
+export default withErrors(async (req) => {
   if (req.method !== "POST") return json(405, { error: "Metodo non consentito." });
   const body = await readJson(req);
   const email = normEmail(body?.email);
@@ -51,10 +51,15 @@ export default async (req) => {
   } catch (err) {
     console.error("Invio email fallito:", err);
     await store.delete(key);
-    return json(502, { error: "Impossibile inviare l'email in questo momento. Riprova più tardi." });
+    const m = `${err?.code || ""} ${err?.responseCode || ""} ${err?.message || ""}`;
+    let why = "Riprova più tardi.";
+    if (/EAUTH|535|534|Invalid login|Username and Password/i.test(m)) why = "Credenziali SMTP rifiutate (controlla SMTP_USER e SMTP_PASS: per Gmail serve la password per le app).";
+    else if (/ETIMEDOUT|ECONNECTION|ESOCKET|ENOTFOUND|ECONNREFUSED|timeout/i.test(m)) why = "Server SMTP non raggiungibile (controlla SMTP_HOST e SMTP_PORT).";
+    else if (/EENVELOPE|553|550|sender/i.test(m)) why = "Mittente rifiutato (MAIL_FROM deve coincidere con l'account SMTP).";
+    return json(502, { error: `Impossibile inviare l'email. ${why}` });
   }
 
   return json(200, { ok: true, ttl: OTP_TTL_MS / 1000, cooldown: RESEND_COOLDOWN_MS / 1000 });
-};
+});
 
 export const config = { path: "/api/send-otp" };
